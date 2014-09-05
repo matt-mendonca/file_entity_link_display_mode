@@ -1,0 +1,6 @@
+name = File Entity Link Display Mode
+description = Adds a display mode settings for File Entities that links to the file entity, not the file itself.
+core = 7.x
+version = "7.x-1.x"
+package = "Media"
+dependencies[] = file_entity

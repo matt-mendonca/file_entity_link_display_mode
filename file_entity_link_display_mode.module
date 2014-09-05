@@ -1,0 +1,53 @@
+<?php
+/**
+ * Implements hook_file_formatter_info().
+ */
+function file_entity_link_display_mode_file_formatter_info() {
+  $formatters['file_entity_file_entity_link'] = array(
+    'label' => t('File Entity'),
+    //'file types' => array('document'),
+    'description' => t('Links to the file entity, not the file itself. The link is prefixed by a file type icon and the name of the file is used as the link text.'),
+    'default settings' => array(),
+    'view callback' => 'file_entity_link_display_mode_file_formatter_file_entity_view',
+    //'settings callback' => 'file_entity_link_display_mode_file_formatter_file_entity_settings'
+    //'mime types' => array('video/youtube'),
+  );
+
+  return $formatters;
+}
+
+/**
+ * Implements hook_file_formatter_FORMATTER_view().
+ */
+function file_entity_link_display_mode_file_formatter_file_entity_view($file, $display, $langcode) {
+  $scheme = file_uri_scheme($file->uri);
+  //dpm($scheme);
+
+  /*
+    Empty check, not sure how this should be coded. Referenced media youtube module.
+  */
+  if ($scheme) :
+    $element = array(
+      '#theme' => 'file_entity_file_entity_link',
+      '#uri' => $file->uri,
+      '#options' => array(),
+    );
+
+    // Fake a default for attributes so the ternary doesn't choke.
+    $display['settings']['attributes'] = array();
+
+    return $element;
+  endif;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function file_entity_link_display_mode_theme() {
+  return array(
+    'file_entity_file_entity_link' => array(
+      'variables' => array('file' => NULL, 'icon_directory' => NULL),
+      'file' => 'file_entity_link_display_mode.theme.inc',
+    )
+  );
+}
